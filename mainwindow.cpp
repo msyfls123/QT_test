@@ -7,7 +7,11 @@
 #include <QSpinbox>
 #include <QDialog>
 #include <QDialogButtonBox>
+#include <QFileDialog>
+#include <QFile>
 #include <QGridLayout>
+#include <QBoxLayout>
+#include <QTextEdit>
 #include "mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -18,18 +22,32 @@ MainWindow::MainWindow(QWidget *parent) :
     openAction = new QAction(QIcon(":/images/doc-open"), tr("&Open..."), this);
     openAction->setShortcuts(QKeySequence::Open);
     openAction->setStatusTip(tr("Open an existing file"));
-    connect(openAction, &QAction::triggered, this, &MainWindow::open);
+
+    saveAction = new QAction(QIcon(":/images/doc-save"), tr("&Save..."), this);
+    saveAction->setShortcuts(QKeySequence::Save);
+    saveAction->setStatusTip(tr("Save a new file"));
+
+    connect(openAction, &QAction::triggered, this, &MainWindow::openFile);
+    connect(saveAction, &QAction::triggered, this, &MainWindow::saveFile);
 
     QMenu *file = menuBar()->addMenu(tr("&File"));
     file->addAction(openAction);
+    file->addAction(saveAction);
 
     QToolBar *toolBar = addToolBar(tr("&File"));
     toolBar->addAction(openAction);
-
-    QToolBar *toolBar2 = addToolBar(tr("Tool Bar 2"));
-    toolBar2->addAction(openAction);
+    toolBar->addAction(saveAction);
 
     statusBar() ;
+
+    textEdit = new QTextEdit(this);
+    main = new QWidget;
+    layout = new QBoxLayout(QBoxLayout::TopToBottom);
+    layout->addWidget(textEdit);
+    main->setLayout(layout);
+    setCentralWidget(main);
+
+    index++;
 }
 
 MainWindow::~MainWindow()
@@ -57,4 +75,75 @@ void MainWindow::open()
     dialog->setLayout(layout);
     dialog->setWindowTitle(tr("Hello, dialog!"));
     dialog->show();
+}
+void MainWindow::openFile()
+{
+    QString path = QFileDialog::getOpenFileName(this,
+                                                tr("Open File"),
+                                                ".",
+                                                tr("Text Files(*.txt)"));
+    if(!path.isEmpty()) {
+        QFile file(path);
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QMessageBox::warning(this, tr("Read File"),
+                                 tr("Cannot open file:\n%1").arg(path));
+            return;
+        }
+        QTextStream in(&file);
+        textEdit->setText(in.readAll());
+        file.close();
+    } else {
+        QMessageBox::warning(this, tr("Path"),
+                             tr("You did not select any file."));
+    }
+}
+
+void MainWindow::saveFile()
+{
+    QString path = QFileDialog::getSaveFileName(this,
+                                                tr("Open File"),
+                                                ".",
+                                                tr("Text Files(*.txt)"));
+    if(!path.isEmpty()) {
+        QFile file(path);
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QMessageBox::warning(this, tr("Write File"),
+                                       tr("Cannot open file:\n%1").arg(path));
+            return;
+        }
+        QTextStream out(&file);
+        out << textEdit->toPlainText();
+        file.close();
+    } else {
+        QMessageBox::warning(this, tr("Path"),
+                             tr("You did not select any file."));
+    }
+}
+void MainWindow::addWidget(QWidget *widget)
+{
+    layout->insertWidget(index,widget);
+    index++;
+}
+void MainWindow::choose()
+{
+    QMessageBox msgBox;
+    msgBox.setText(tr("The document has been modified."));
+    msgBox.setInformativeText(tr("Do you want to save your changes?"));
+    msgBox.setDetailedText(tr("Differences here..."));
+    msgBox.setStandardButtons(QMessageBox::Save
+                              | QMessageBox::Discard
+                              | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Save);
+    int ret = msgBox.exec();
+    switch (ret) {
+    case QMessageBox::Save:
+        qDebug() << "Save document!";
+        break;
+    case QMessageBox::Discard:
+        qDebug() << "Discard changes!";
+        break;
+    case QMessageBox::Cancel:
+        qDebug() << "Close document!";
+        break;
+    }
 }

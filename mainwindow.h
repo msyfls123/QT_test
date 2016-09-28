@@ -5,6 +5,9 @@
 #include <QWidget>
 #include <QDebug>
 #include <QWidget>
+#include <QBoxLayout>
+
+class QTextEdit;
 
 class MainWindow : public QMainWindow
 {
@@ -12,7 +15,12 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
+    void addWidget(QWidget *widget);
+private slots:
+    void openFile();
+    void saveFile();
+public slots:
+    void choose();
 private:
     void open();
     void setUserAge(int age)
@@ -21,7 +29,13 @@ private:
         qDebug() << userAge;
     };
     QAction *openAction;
+    QAction *saveAction;
+    QWidget *main;
+    QBoxLayout *layout;
+    QTextEdit *textEdit;
+
     int userAge;
+    int index;
 };
 
 
