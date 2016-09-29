@@ -53,7 +53,6 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
 }
-UserAgeDialog::UserAgeDialog(QWidget *parent):QDialog(parent){}
 void MainWindow::open()
 {
     UserAgeDialog *dialog = new UserAgeDialog(this);

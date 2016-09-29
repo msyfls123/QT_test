@@ -19,8 +19,9 @@ int main(int argc, char *argv[])
     anewspaper.send();
     MainWindow win;
 
-    QPushButton *button = new QPushButton("Quit");
-    QObject::connect(button, &QPushButton::clicked, &QApplication::quit);
+    QPushButton *button = new QPushButton("Set Value");
+    QObject::connect(button, &QPushButton::clicked, &win, &MainWindow::open);
+//    QObject::connect(button, &QPushButton::clicked, &QApplication::quit);
     win.addWidget(button);
 
     QPushButton *button2 = new QPushButton("Choose");

@@ -16,13 +16,13 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void addWidget(QWidget *widget);
+    void open();
 private slots:
     void openFile();
     void saveFile();
 public slots:
     void choose();
 private:
-    void open();
     void setUserAge(int age)
     {
         userAge = age;
@@ -42,7 +42,7 @@ private:
 class UserAgeDialog : public QDialog{
     Q_OBJECT
 public:
-    UserAgeDialog(QWidget *parent=0);
+    UserAgeDialog(QWidget *parent):QDialog(parent){}
     void getAge(int age)
     {
         newAge=age;
