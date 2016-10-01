@@ -4,6 +4,8 @@
 #include <QSpinBox>
 #include <QSlider>
 #include <QFont>
+#include <QSystemTrayIcon>
+#include <QMenu>
 #include "newspaper.h"
 #include "reader.h"
 #include "mainwindow.h"
@@ -39,6 +41,23 @@ int main(int argc, char *argv[])
     spinBox->setValue(35);
     win.addWidget(spinBox);
     win.addWidget(slider);
+
+    QSystemTrayIcon *trayIcon = new QSystemTrayIcon();
+    trayIcon->setToolTip(QString("I'm tray"));
+    trayIcon->setIcon(QIcon(":/images/system-tray"));
+    QMenu *tray_menu = new QMenu();
+    QAction *action_show = new QAction(tray_menu);
+    action_show->setText(QString("显示"));
+    action_show->setIcon(QIcon(":/images/system-show"));
+    QAction *action_show2 = new QAction(tray_menu);
+    action_show2->setText(QString("隐藏"));
+    action_show2->setIcon(QIcon(":/images/system-hide"));
+    QObject::connect(action_show, &QAction::triggered, &win, &QMainWindow::show);
+    QObject::connect(action_show2, &QAction::triggered, &win, &QMainWindow::hide);
+    tray_menu->addAction(action_show);
+    tray_menu->addAction(action_show2);
+    trayIcon->setContextMenu(tray_menu);
+    trayIcon->show();
 
     QFont font("Arial", 10, QFont::Normal, false);
     QApplication::setFont(font);

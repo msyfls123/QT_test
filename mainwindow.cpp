@@ -146,3 +146,7 @@ void MainWindow::choose()
         break;
     }
 }
+void MainWindow::hide()
+{
+    this->hide();
+}

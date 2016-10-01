@@ -20,6 +20,7 @@ public:
 private slots:
     void openFile();
     void saveFile();
+    void hide();
 public slots:
     void choose();
 private:

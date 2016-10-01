@@ -2,5 +2,8 @@
     <qresource prefix="/images">
         <file alias="doc-open">images/document-open.png</file>
         <file alias="doc-save">images/document-save.png</file>
+        <file alias="system-tray">images/ebichu.jpg</file>
+        <file alias="system-hide">images/hide.png</file>
+        <file alias="system-show">images/show.png</file>
     </qresource>
 </RCC>
