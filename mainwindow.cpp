@@ -12,12 +12,13 @@
 #include <QGridLayout>
 #include <QBoxLayout>
 #include <QTextEdit>
+#include <QMouseEvent>
 #include "mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
-    setWindowTitle(tr("Main Window"));
+    setWindowTitle(tr("Ebichu [*]"));
 
     openAction = new QAction(QIcon(":/images/doc-open"), tr("&Open..."), this);
     openAction->setShortcuts(QKeySequence::Open);
@@ -41,6 +42,14 @@ MainWindow::MainWindow(QWidget *parent) :
     statusBar() ;
 
     textEdit = new QTextEdit(this);
+    textEdit->setFixedSize(330,150);
+//    connect(textEdit, &QTextEdit::textChanged, [=]() {
+//        this->setWindowModified(true);
+//    });
+    connect(textEdit, &QTextEdit::undoAvailable, [=](int i) {
+        this->setWindowModified(i);
+    });
+
     main = new QWidget;
     layout = new QBoxLayout(QBoxLayout::TopToBottom);
     layout->addWidget(textEdit);
@@ -149,4 +158,42 @@ void MainWindow::choose()
 void MainWindow::hide()
 {
     this->hide();
+}
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if (isWindowModified()) {
+        bool exit = QMessageBox::question(this,
+                                      tr("Quit"),
+                                      tr("Are you sure to quit this application?"),
+                                      QMessageBox::Yes | QMessageBox::No,
+                                      QMessageBox::No) == QMessageBox::Yes;
+        if (exit) {
+            event->accept();
+        } else {
+            event->ignore();
+        }
+    } else {
+        event->accept();
+    }
+}
+
+
+void EventLabel::mouseMoveEvent(QMouseEvent *event)
+{
+    this->setText(QString("<center><h1>Move: (%1, %2)</h1></center>")
+                  .arg(QString::number(event->x()), QString::number(event->y())));
+}
+
+void EventLabel::mousePressEvent(QMouseEvent *event)
+{
+    this->setText(QString("<center><h1>Press: (%1, %2)</h1></center>")
+                  .arg(QString::number(event->x()), QString::number(event->y())));
+}
+
+void EventLabel::mouseReleaseEvent(QMouseEvent *event)
+{
+    QString msg;
+    msg.sprintf("<center><h1>Release: (%d, %d)</h1></center>",
+                event->x(), event->y());
+    this->setText(msg);
 }

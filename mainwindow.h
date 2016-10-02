@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QWidget>
 #include <QDebug>
+#include <QLabel>
 #include <QWidget>
 #include <QBoxLayout>
 
@@ -23,12 +24,14 @@ private slots:
     void hide();
 public slots:
     void choose();
+protected:
+    void closeEvent(QCloseEvent *event);
 private:
     void setUserAge(int age)
     {
         userAge = age;
         qDebug() << userAge;
-    };
+    }
     QAction *openAction;
     QAction *saveAction;
     QWidget *main;
@@ -58,4 +61,12 @@ signals:
 private:
     int newAge;
 };
+class EventLabel : public QLabel
+{
+protected:
+    void mouseMoveEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+};
 #endif // MAINWINDOW_H
+

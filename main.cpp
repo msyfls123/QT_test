@@ -9,6 +9,7 @@
 #include "newspaper.h"
 #include "reader.h"
 #include "mainwindow.h"
+#include "tray.h"
 
 int main(int argc, char *argv[])
 {
@@ -23,7 +24,6 @@ int main(int argc, char *argv[])
 
     QPushButton *button = new QPushButton("Set Value");
     QObject::connect(button, &QPushButton::clicked, &win, &MainWindow::open);
-//    QObject::connect(button, &QPushButton::clicked, &QApplication::quit);
     win.addWidget(button);
 
     QPushButton *button2 = new QPushButton("Choose");
@@ -42,26 +42,18 @@ int main(int argc, char *argv[])
     win.addWidget(spinBox);
     win.addWidget(slider);
 
-    QSystemTrayIcon *trayIcon = new QSystemTrayIcon();
-    trayIcon->setToolTip(QString("I'm tray"));
-    trayIcon->setIcon(QIcon(":/images/system-tray"));
-    QMenu *tray_menu = new QMenu();
-    QAction *action_show = new QAction(tray_menu);
-    action_show->setText(QString("显示"));
-    action_show->setIcon(QIcon(":/images/system-show"));
-    QAction *action_show2 = new QAction(tray_menu);
-    action_show2->setText(QString("隐藏"));
-    action_show2->setIcon(QIcon(":/images/system-hide"));
-    QObject::connect(action_show, &QAction::triggered, &win, &QMainWindow::show);
-    QObject::connect(action_show2, &QAction::triggered, &win, &QMainWindow::hide);
-    tray_menu->addAction(action_show);
-    tray_menu->addAction(action_show2);
-    trayIcon->setContextMenu(tray_menu);
-    trayIcon->show();
+
+    MyTray *mytray = new MyTray(&win);
+    win.addWidget(mytray);
+
+    EventLabel *label = new EventLabel;
+    label->resize(300, 200);
+    label->setMouseTracking(true);
+    win.addWidget(label);
 
     QFont font("Arial", 10, QFont::Normal, false);
     QApplication::setFont(font);
-    win.setWindowFlags(Qt::WindowCloseButtonHint); // 设置禁止最大化
+//    win.setWindowFlags(); // 设置禁止最大化
     win.setFixedSize(350,480); // 禁止改变窗口大小。
     win.show();
 
