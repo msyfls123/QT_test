@@ -5,6 +5,8 @@
 #include <QSlider>
 #include <QFont>
 #include <QSystemTrayIcon>
+#include <QWebView>
+#include <QUrl>
 #include <QMenu>
 #include "newspaper.h"
 #include "reader.h"
@@ -42,6 +44,10 @@ int main(int argc, char *argv[])
     win.addWidget(spinBox);
     win.addWidget(slider);
 
+//    QtWebView::initialize();
+    QWebView *view = new QWebView(&win);
+    view->load(QUrl("http://masy.site/"));
+    win.addWidget(view);
 
     MyTray *mytray = new MyTray(&win);
     win.addWidget(mytray);
@@ -54,7 +60,7 @@ int main(int argc, char *argv[])
     QFont font("Arial", 10, QFont::Normal, false);
     QApplication::setFont(font);
 //    win.setWindowFlags(); // 设置禁止最大化
-    win.setFixedSize(350,480); // 禁止改变窗口大小。
+    win.setFixedSize(350,630); // 禁止改变窗口大小。
     win.show();
 
     return app.exec();
