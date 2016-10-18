@@ -5,7 +5,8 @@
 #include <QSlider>
 #include <QFont>
 #include <QSystemTrayIcon>
-#include <QWebView>
+#include <QWebEngineView>
+#include <QWebEnginePage>
 #include <QUrl>
 #include <QMenu>
 #include "newspaper.h"
@@ -44,9 +45,11 @@ int main(int argc, char *argv[])
     win.addWidget(spinBox);
     win.addWidget(slider);
 
-//    QtWebView::initialize();
-    QWebView *view = new QWebView(&win);
-    view->load(QUrl("http://masy.site/"));
+    QWebEngineView *view = new QWebEngineView(&win);
+//    QAction *webaction = view->page()->action(QWebEnginePage::OpenLinkInNewWindow);
+//    QAction *viewaction = view->pageAction(QWebEnginePage::OpenLinkInNewTab);
+//    QObject::connect(viewaction, &QAction::triggered, view, &QWebEngineView::load);
+    view->load(QUrl("http://msyfls123.github.io/myWiki/index.html"));
     win.addWidget(view);
 
     MyTray *mytray = new MyTray(&win);
