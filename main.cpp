@@ -26,10 +26,12 @@ int main(int argc, char *argv[])
     MainWindow win;
 
     QPushButton *button = new QPushButton("Set Value");
+    button->setStyleSheet("QPushButton{width:150px;height:30px;border-radius:10px;border: 2px groove gray;}QPushButton:hover{background-color:black;color:white;}");
     QObject::connect(button, &QPushButton::clicked, &win, &MainWindow::open);
     win.addWidget(button);
 
     QPushButton *button2 = new QPushButton("Choose");
+    button2->setStyleSheet("QPushButton{width:150px;height:30px;border-radius:10px;border: 2px groove gray;}");
     QObject::connect(button2, &QPushButton::clicked, &win, &MainWindow::choose);
     win.addWidget(button2);
 
@@ -49,7 +51,7 @@ int main(int argc, char *argv[])
 //    QAction *webaction = view->page()->action(QWebEnginePage::OpenLinkInNewWindow);
 //    QAction *viewaction = view->pageAction(QWebEnginePage::OpenLinkInNewTab);
 //    QObject::connect(viewaction, &QAction::triggered, view, &QWebEngineView::load);
-    view->load(QUrl("http://msyfls123.github.io/myWiki/index.html"));
+    view->load(QUrl("http://msyfls123.github.io/myWiki/"));
     win.addWidget(view);
 
     MyTray *mytray = new MyTray(&win);
@@ -63,7 +65,7 @@ int main(int argc, char *argv[])
     QFont font("Arial", 10, QFont::Normal, false);
     QApplication::setFont(font);
 //    win.setWindowFlags(); // 设置禁止最大化
-    win.setFixedSize(350,630); // 禁止改变窗口大小。
+    win.setFixedSize(720,630); // 禁止改变窗口大小。
     win.show();
 
     return app.exec();

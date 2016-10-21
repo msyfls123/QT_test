@@ -6,7 +6,7 @@
 #include <QDebug>
 #include <QLabel>
 #include <QWidget>
-#include <QBoxLayout>
+#include <QGridLayout>
 
 class QTextEdit;
 
@@ -21,7 +21,6 @@ public:
 private slots:
     void openFile();
     void saveFile();
-    void hide();
 public slots:
     void choose();
 protected:
@@ -35,7 +34,7 @@ private:
     QAction *openAction;
     QAction *saveAction;
     QWidget *main;
-    QBoxLayout *layout;
+    QGridLayout *layout;
     QTextEdit *textEdit;
 
     int userAge;

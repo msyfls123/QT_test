@@ -42,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
     statusBar() ;
 
     textEdit = new QTextEdit(this);
-    textEdit->setFixedSize(330,150);
+    textEdit->setBaseSize(700, 100);
 //    connect(textEdit, &QTextEdit::textChanged, [=]() {
 //        this->setWindowModified(true);
 //    });
@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
     });
 
     main = new QWidget;
-    layout = new QBoxLayout(QBoxLayout::TopToBottom);
+    layout = new QGridLayout(this);
     layout->addWidget(textEdit);
     main->setLayout(layout);
     setCentralWidget(main);
@@ -129,7 +129,7 @@ void MainWindow::saveFile()
 }
 void MainWindow::addWidget(QWidget *widget)
 {
-    layout->insertWidget(index,widget);
+    layout->addWidget(widget);
     index++;
 }
 void MainWindow::choose()
@@ -155,10 +155,10 @@ void MainWindow::choose()
         break;
     }
 }
-void MainWindow::hide()
-{
-    this->hide();
-}
+//void MainWindow::hide()
+//{
+//    this->hide();
+//}
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     if (isWindowModified()) {
