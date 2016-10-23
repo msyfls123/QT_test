@@ -13,6 +13,7 @@
 #include "reader.h"
 #include "mainwindow.h"
 #include "tray.h"
+#include "webview.h"
 
 int main(int argc, char *argv[])
 {
@@ -47,11 +48,11 @@ int main(int argc, char *argv[])
     win.addWidget(spinBox);
     win.addWidget(slider);
 
-    QWebEngineView *view = new QWebEngineView(&win);
-//    QAction *webaction = view->page()->action(QWebEnginePage::OpenLinkInNewWindow);
-//    QAction *viewaction = view->pageAction(QWebEnginePage::OpenLinkInNewTab);
-//    QObject::connect(viewaction, &QAction::triggered, view, &QWebEngineView::load);
-    view->load(QUrl("http://msyfls123.github.io/myWiki/"));
+//    QWebEngineView *view = new QWebEngineView(&win);
+//    view->load(QUrl("http://msyfls123.github.io/myWiki/"));
+//    win.addWidget(view);
+    Webview *view = new Webview(Q_NULLPTR);
+    view->load(QUrl("http://masy.site"));
     win.addWidget(view);
 
     MyTray *mytray = new MyTray(&win);
